@@ -1,0 +1,300 @@
+*********************************************************
+*         General Unconventional Reservoir Utility      *
+*********************************************************
+
+** 2015-10-15, 4:19 PM, bicheng.yan
+
+** Grid data as included file
+GLOBALCELL
+		\input\include\grid.dat
+
+** Connection data as included file		
+CONNECTIONS  
+	SPLIT	\input\include\conne_split.dat    % SPLIT: split trasmissibility format; NONSPLIT: non-split trasmissibility format		
+
+**CONNECTIONS  
+**	NONSPLIT	\input\include\conne.dat    % SPLIT: split trasmissibility format; NONSPLIT: non-split trasmissibility format		
+		
+** PVT data 
+PVT 
+	FLUID GAS
+	MODEL PR
+	NC 2 
+	COMPNAME  % Component name 
+	CO2   C1     
+	MW % Molecular weight 
+	44.01 16.093  
+	AC % Acentric factor 
+	0.28686 0.013 
+	PCRIT % Pcrit of each component (psia) 
+	1071.32999996644 667.779999979080 
+	TCRIT % Tcrit of each component (°F) 
+	88.46 -117.4 
+	ZCRIT % Zcrit of each component (dimless, Zc = Vmc*Pc/(R*Tc))    
+	0.537856087287881 0.191633268719617 
+	PCHOR %Parachor for each component 
+	153.228 75.0604 
+	VSHIF % Volume shift 
+	-0.01310310772 -0.1442656189 
+	BIN % Binary Interaction Coefficients (BIC_comp)
+	0	     0.1      
+	0.1	      0       
+	LBC_VISCOEFF % Lorentz-Bray-Clark Viscosity Correlation Coefficients (LBC_Coeffs)
+	0.1023 0.023364 0.058533 -0.040758 0.0093324 
+	STD % Standard conditions definition for pressure (SC_Pressure) (psia) and temperature (SC_Temperature) (°F)
+	14.6959   60
+ENDPVT
+
+WATER 
+	PREFW  5868    % Water reference pressure, psia 
+	RHOWSC 63      % Water density under standard condition, lb/cu.ft 
+	CREFW  3E-6    % Water compressibility, 1/psia
+	FVFREF 1.029   % Water formation volume factor at reference pressure, 
+	VREFW  0.31    % Water viscosity at reference pressure, cp 
+	CVREFW 0.0     % Water viscosibility, 1/psia 	
+ENDWATER
+
+INIT
+	RPT 1
+		CMPROCK  4E-6    % Rock compressibility, 1/psia 
+		PREF     3000    % Reference pressure, psia
+		PRESINIT 3000    % Initial reservoir pressure, psia 5520  6000
+		TRES     200     % Reservoir temperature, °F
+		SWINT    0.16    % Initial reservoir water saturation, fraction: 0.48
+		ZIINT
+		0.01 0.99          % Fluid composition, provided for each gridblock (Zi_comp)
+		!GKAPP    CIVAN    % Gas apparent permeability consideration based on CIVAN's model' 
+		PORD     10        % Pore diameters, nm  
+		GFICK              % Fickian diffusivity for General Fick's Law', unit: ft^2/Day; Dim: nc-1  
+		1.0                % Data from Hoteit: Modeling diffusion and gas-oil mass transfer in fractured reservoir        		
+		SORPTION NA        % Langmuir adsorption model for rock type 1 : Choice: 'Langmuir' (langmuir model) or 'NA' (not considered)
+		RMDEN 125          % Rock density of the rock type (bulk density), lb/cu.ft
+		VLI                % Langmuir volume for each component, scf/lb (if no adsorption for some component, make VLi zero) 
+		0.028 0.0455 
+		PLI                % Langmuir pressure for each component, psia 
+		1562 811 		
+	ENDRPT
+	RPT 2
+		CMPROCK  4E-6    % Rock compressibility, 1/psia 
+		PREF     3000    % Reference pressure, psia
+		PRESINIT 3000    % Initial reservoir pressure, psia 5520  6000
+		TRES     200     % Reservoir temperature, °F
+		SWINT    0.16    % Initial reservoir water saturation, fraction: 0.48
+		ZIINT
+		0.01 0.99          % Fluid composition, provided for each gridblock (Zi_comp)
+		!GKAPP    CIVAN    % Gas apparent permeability consideration based on CIVAN's model' 
+		PORD     10        % Pore diameters, nm  
+		!GFICK              % Fickian diffusivity for General Fick's Law', unit: ft^2/Day; Dim: nc-1  
+		!1.0                % Data from Hoteit: Modeling diffusion and gas-oil mass transfer in fractured reservoir        		
+		SORPTION NA        % Langmuir adsorption model for rock type 1 : Choice: 'Langmuir' (langmuir model) or 'NA' (not considered)
+		RMDEN 125          % Rock density of the rock type (bulk density), lb/cu.ft
+		VLI                % Langmuir volume for each component, scf/lb (if no adsorption for some component, make VLi zero) 
+		0.028 0.0455 
+		PLI                % Langmuir pressure for each component, psia 
+		1562 811 		
+	ENDRPT		
+ENDINIT
+
+ROCKFLUID
+	RPT 1
+		MODEL 0
+		SWFN 23  % number of rows in table
+		0.16  0      0
+		0.18  0      0
+		0.20  0.002  0
+		0.24  0.010  0	
+		0.28  0.020  0
+		0.32  0.033  0
+		0.36  0.049  0
+		0.40  0.066  0
+		0.44  0.090  0
+		0.48  0.119  0
+		0.52  0.150  0
+		0.56  0.186  0
+		0.60  0.227  0
+		0.64  0.277  0
+		0.68  0.330  0
+		0.72  0.390  0
+		0.76  0.462  0
+		0.8   0.540  0
+		0.84  0.620  0
+		0.88  0.710  0
+		0.92  0.800  0
+		0.96  0.900  0  
+		1.00  1.000  0
+		SGFN  21 
+		0.00  0.000  0
+		0.04  0.005  0
+		0.08  0.013  0
+		0.12  0.026  0	
+		0.16  0.040  0
+		0.20  0.058  0
+		0.24  0.078  0
+		0.28  0.100  0
+		0.32  0.126  0
+		0.36  0.156  0
+		0.40  0.187  0
+		0.44  0.222  0
+		0.48  0.260  0
+		0.56  0.349  0
+		0.60  0.400  0
+		0.64  0.450  0
+		0.68  0.505  0
+		0.72  0.562  0
+		0.76  0.620  0
+		0.80  0.680  0
+		0.84  0.740  0
+		SOF3  21 
+		0.00  0.000  0.000
+		0.04  0.000  0.000
+		0.08  0.000  0.000
+		0.12  0.000  0.000
+		0.16  0.000  0.000
+		0.20  0.000  0.000
+		0.24  0.000  0.000
+		0.28  0.005  0.005
+		0.32  0.012  0.012
+		0.36  0.024  0.024
+		0.40  0.040  0.040
+		0.44  0.060  0.060
+		0.48  0.082  0.082
+		0.52  0.112  0.112
+		0.56  0.150  0.150
+		0.60  0.196  0.196
+		0.68  0.315  0.315
+		0.72  0.400  0.400
+		0.76  0.513  0.513
+		0.80  0.650  0.650
+		0.84  0.800  0.800 
+	ENDRPT	
+	RPT 2
+		MODEL 0
+		SWFN 23  % number of rows in table
+		0.16  0      0
+		0.18  0      0
+		0.20  0.002  0
+		0.24  0.010  0	
+		0.28  0.020  0
+		0.32  0.033  0
+		0.36  0.049  0
+		0.40  0.066  0
+		0.44  0.090  0
+		0.48  0.119  0
+		0.52  0.150  0
+		0.56  0.186  0
+		0.60  0.227  0
+		0.64  0.277  0
+		0.68  0.330  0
+		0.72  0.390  0
+		0.76  0.462  0
+		0.8   0.540  0
+		0.84  0.620  0
+		0.88  0.710  0
+		0.92  0.800  0
+		0.96  0.900  0  
+		1.00  1.000  0
+		SGFN  21 
+		0.00  0.000  0
+		0.04  0.005  0
+		0.08  0.013  0
+		0.12  0.026  0	
+		0.16  0.040  0
+		0.20  0.058  0
+		0.24  0.078  0
+		0.28  0.100  0
+		0.32  0.126  0
+		0.36  0.156  0
+		0.40  0.187  0
+		0.44  0.222  0
+		0.48  0.260  0
+		0.56  0.349  0
+		0.60  0.400  0
+		0.64  0.450  0
+		0.68  0.505  0
+		0.72  0.562  0
+		0.76  0.620  0
+		0.80  0.680  0
+		0.84  0.740  0
+		SOF3  21 
+		0.00  0.000  0.000
+		0.04  0.000  0.000
+		0.08  0.000  0.000
+		0.12  0.000  0.000
+		0.16  0.000  0.000
+		0.20  0.000  0.000
+		0.24  0.000  0.000
+		0.28  0.005  0.005
+		0.32  0.012  0.012
+		0.36  0.024  0.024
+		0.40  0.040  0.040
+		0.44  0.060  0.060
+		0.48  0.082  0.082
+		0.52  0.112  0.112
+		0.56  0.150  0.150
+		0.60  0.196  0.196
+		0.68  0.315  0.315
+		0.72  0.400  0.400
+		0.76  0.513  0.513
+		0.80  0.650  0.650
+		0.84  0.800  0.800 
+	ENDRPT	
+ENDROCKFLUID
+
+NUMERICAL
+	FIM             % FIM: fully implicit method (default); IMPEM: implicit pressure explicit mass (not implemented);
+	SOLVER 1        % Matrix solver option: 1 - direct solver 
+					%                       2 - CG with preconditioner 
+					%                       3 - GMRES with preconditioner
+					% 						4 - BiCGSTAB with preconditioner 
+					% 						5 - GPU based direct solver 					
+	TIME 100                % Total simulation time, days 
+	DTINIT 0.01             % Initial time step size for simulation, days 0.1
+	DTMAX 2                 % Maximum allowable time step size, days 
+	DTMIN 1e-006            % Minumum allowable time step size, days
+	DTMULT 2.0              % Multiplier to increase the size of dt if convergence achieved, default: 1.5 
+	DTBACK 5.0              % Time step size backward exponent when phase appearace/disappearance, well control switch
+	DBHPTHRESH 2000         % Threshold to reduce time step size for bottom hole pressure drop, psia
+	DPPTHRESH  50           % Threshold to reduce time step size for pressure when close to saturation pressure, psia 
+	TOL        0.1          % Tolerance for residual in newton (mass balance: lb-mol; volume balance: cu.ft), recommended: 0.1
+	NETWONMAX 10            % Maximum number of newton iteration at each timestep
+ENDNUMERICAL
+
+WELL 1                      % Specify the number of wells in the reservoir
+MAXPERF 20                  % Specify maximum number of perforation in the reservoir
+PRODUCER	WELL1	OPEN    % Well type: producer, well name, well status: open(OPEN) shut in (SHUTIN) 
+	BHPMIN 500              % Maximum bottom hole pressure control for injector (BHPMAX) or mininum for producer (BHPMIN), psia
+	REFDEPTH 12500          % Well reference depth, ft 
+	
+	GASSCF  1.0E+4			% Specify producer rate control: 
+	!OILSTB  500  		    % OILSTB, oil well for rate control, STB/Day 
+	!WATSTB  100             % GASSCF, gas rate for rate control, SCF/Day 
+							% WATSTB, water rate for rate control, STB/Day
+							% LIQSTB, liquid rate for rate control, STB/Day
+							
+	PERF 1                  % PERF, followed by the number of perforations 
+	6    52.9570            % Table: Perf cell name | well index	  8.172437 52.9570 
+ENDWELL
+
+ENDF
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+INJECTOR	WELL2	SHUTIN  % Well type: producer, well name, well status: open(OPEN), shut in(SHUTIN) 
+	BHPMAX 9000             % Maximum bottom hole pressure control, psia
+	REFDEPTH 12500          % Well reference depth, ft 
+	
+	GASSCF  1.0E1			% Specify producer rate control: 
+							% OILSTB, oil well for rate control, STB/Day 
+							% GASSCF, gas rate for rate control, SCF/Day 
+							% WATSTB, water rate for rate control, STB/Day
+							% LIQSTB, liquid rate for rate control, STB/Day
+	%   	'C1'   'C2C4'	
+	INJCOM  1.00   0.00   
+							
+	PERF 1                  % PERF, followed by the number of perforations  
+	2  10000                % Table: Perf cell name | well index
+ENDWELL
+
+
+
